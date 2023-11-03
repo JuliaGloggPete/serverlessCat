@@ -1,0 +1,25 @@
+service: cat-api-server
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  profile: Julia
+  region: eu-north-1
+  iam:
+    role: arn:aws:iam::429799042192:role/lectures-cloud
+
+plugins:
+  -serverless-webpack
+
+package:
+  individually: true
+
+
+functions:
+ getCats:
+    handler: functions/getCats/index.handler
+    events:
+      - httpApi:
+          path: '/cats'
+          method: GET

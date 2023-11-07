@@ -10,16 +10,38 @@ provider:
     role: arn:aws:iam::429799042192:role/lectures-cloud
 
 plugins:
-  -serverless-webpack
+  - serverless-webpack
 
 package:
   individually: true
 
 
 functions:
- getCats:
+  getCats:
     handler: functions/getCats/index.handler
     events:
       - httpApi:
           path: '/cats'
           method: GET
+  postCat:
+    handler: functions/postCat/index.handler
+    events:
+      - httpApi:
+          path: '/cats'
+          method: POST
+
+
+resources:
+ Resources:
+    catsDb: 
+      Type: AWS::DynamoDB::Table
+      Properties: 
+        TableName: cats-db
+        AttributeDefinitions:
+          - AttributeName: idnumber
+            AttributeType: S
+        KeySchema:
+          - AttributeName: idnumber
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST 
+

@@ -1,32 +1,15 @@
-const {sendResponse} = require('../../responses/index');
-
-var cats = [
-    {
-        "name": "Whiskers",
-        "age": 2,
-        "idnumber": "CAT123456",
-        "breed": "Siamese",
-        "color": "Seal Point"
-    },
-    {
-        "name": "Mittens",
-        "age": 4,
-        "idnumber": "CAT789012",
-        "breed": "Maine Coon",
-        "color": "Tabby"
-    },
-    {
-        "name": "Luna",
-        "age": 1,
-        "idnumber": "CAT654321",
-        "breed": "Persian",
-        "color": "White"
-    }
-];
+const AWS = require("aws-sdk")
+const {sendResponse}= require('../../responses')
+const db = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = async (event, context) =>{
 
-    return sendResponse(200, {cats});
+
+   const {Items} = await db.scan({
+        TableName:'cats-db'
+    }).promise();
+
+    return sendResponse(200, {success: true, cats: Items});
 
 
 }

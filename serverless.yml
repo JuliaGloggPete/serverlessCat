@@ -29,6 +29,32 @@ functions:
       - httpApi:
           path: '/cats'
           method: POST
+  deleteCat:
+    handler: functions/deleteCat/index.handler
+    events:
+      - httpApi:
+          path: '/cats/{catId}'
+          method: DELETE
+  updateCat:
+    handler: functions/updateCat/index.handler
+    events:
+      - httpApi:
+          path: '/cats/{catId}'
+          method: PATCH
+  signUp:
+    handler: functions/signUp/index.handler
+    events:
+      - httpApi:
+          path: '/auth/signup'
+          method: POST
+  login:
+    handler: functions/logIn/index.handler
+    events:
+      - httpApi:
+          path: '/auth/login'
+          method: POST
+
+
 
 
 resources:
@@ -42,6 +68,18 @@ resources:
             AttributeType: S
         KeySchema:
           - AttributeName: idnumber
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST 
+
+    usersDb: 
+      Type: AWS::DynamoDB::Table
+      Properties: 
+        TableName: accounts
+        AttributeDefinitions:
+          - AttributeName: username
+            AttributeType: S
+        KeySchema:
+          - AttributeName: username
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST 
 
